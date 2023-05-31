@@ -1,0 +1,9 @@
+bin/
+certs/
+output/
+crds-workload-identity/
+
+notation.*
+*.tar.gz
+my_policy.json
+LICENSE

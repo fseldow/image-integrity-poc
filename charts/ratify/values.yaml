@@ -1,0 +1,111 @@
+image:
+  repository: ghcr.io/deislabs/ratify
+  crdRepository: ghcr.io/deislabs/ratify-crds
+  tag: v1.0.0-rc.4
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+logLevel: info
+notaryCert: ""
+cosign:
+  enabled: false
+  key: ""
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 600m
+    memory: 512Mi
+serviceAccount:
+  create: true
+  name: ratify-admin
+gatekeeper:
+  version: "3.11.0"
+  namespace: # default is gatekeeper-system
+instrumentation:
+  metricsEnabled: true
+  metricsType: prometheus
+  metricsPort: 8888
+
+# Can be used to authenticate to:
+# ACR -> oras.authProviders.azureWorkloadIdentityEnabled
+# Key Vault -> akvCertConfig.enabled
+azureWorkloadIdentity:
+  clientId:
+
+azureManagedIdentity:
+  clientId:
+  tenantId:
+
+akvCertConfig:
+  enabled: false
+  vaultURI:
+  cert1Name:
+  cert1Version:
+  cert2Name:
+  cert2Version:
+  tenantId:
+
+oras:
+  useHttp: false
+  authProviders:
+    azureWorkloadIdentityEnabled: false
+    azureManagedIdentityEnabled: false
+    k8secretsEnabled: false
+    awsEcrBasicEnabled: false
+    awsApiOverride:
+      enabled: false
+      endpoint: ""
+      partition: "" # defaults to aws
+      region: ""
+  cache:
+    # Please tune your cache parameters to get better performance on the Oras Store performance.
+    enabled: true # ttl-based cache may cause inconsistency between cache and data source, please disable it if strong consistency is required.
+    ttl: 10 # in seconds
+    capacity: 100 # capacity is the max size in megabytes of the full cache.
+    keyNumber: 10000 # keyNumber is the number of items you expect to keep in the cache when full. It makes a difference to the cache performance, please set it close to the item count.
+
+provider:
+  tls:
+    crt: "" # crt used by ratify (httpserver), please provide your own crt
+    key: "" # key used by ratify (httpserver), please provide your own key
+    cabundle: "" # base64 encoded CA bundle used for the 'caBundle' property for the ratify provider within gatekeeper
+  timeout:
+    # timeout values must match gatekeeper webhook timeouts
+    validationTimeoutSeconds: 5
+    mutationTimeoutSeconds: 2
+  cache:
+    ttl: 10s # cache ttl duration
+    size: 100 # number of items to be kept in cache. Set to 0 to disable cache.
+
+podAnnotations: {}
+podLabels: {}
+enableRuntimeDefaultSeccompProfile: true
+
+rbac:
+  create: true
+
+upgradeCRDs:
+  enabled: true
+  extraRules: []
+
+crds:
+  affinity: {}
+  tolerations: []
+  nodeSelector: { kubernetes.io/os: linux }
+  resources: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsGroup: 65532
+    runAsNonRoot: true
+    runAsUser: 65532
+
+# See https://github.com/deislabs/ratify/blob/main/docs/reference/usage.md for a list of available feature flags
+featureFlags:
+  # RATIFY_FEATURE_NAME: true

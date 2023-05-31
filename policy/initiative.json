@@ -1,0 +1,56 @@
+{
+    "parameters": {
+      "certs": {
+        "allowedValues": null,
+        "defaultValue": [],
+        "metadata": {
+          "assignPermissions": null,
+          "description": null,
+          "displayName": "certs (it is only an example, please do not modify)",
+          "portalReview": true,
+          "strongType": null
+        },
+        "type": "array"
+      },
+      "effect": {
+        "allowedValues": [
+          "Deny",
+          "Audit",
+          "Disabled"
+        ],
+        "defaultValue": "Deny",
+        "metadata": {
+          "assignPermissions": null,
+          "description": null,
+          "displayName": "notary v2 validation",
+          "portalReview": true,
+          "strongType": null
+        },
+        "type": "string"
+      }
+    },
+    "policyDefinitionGroups": [],
+    "policyDefinitions": [
+      {
+        "groupNames": [],
+        "parameters": {},
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a8eff44f-8c92-45c3-a3fb-9880802d67a7",
+        "policyDefinitionReferenceId": "Deploy Azure Policy Add-on to Azure Kubernetes Service clusters_1"
+      },
+      {
+        "groupNames": [],
+        "parameters": {
+          "effect": {
+            "value": "[parameters('effect')]"
+          },
+          "namespaces": {
+            "value": "[parameters('certs')]"
+          }
+        },
+        "policyDefinitionId": "/subscriptions/xxxxx/providers/Microsoft.Authorization/policyDefinitions/xxxx",
+        "policyDefinitionReferenceId": "ratify_1"
+      }
+    ],
+    "policyType": "Custom",
+    "type": "Microsoft.Authorization/policySetDefinitions"
+  }
