@@ -1,7 +1,9 @@
 # Before ALL
 ## Get the repo
+```
 git clone https://github.com/fseldow/image-integrity-poc
 cd image-integrity-poc
+```
 
 ## Limitations:
 - It will not include mutation policy for now.
