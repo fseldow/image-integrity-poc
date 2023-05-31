@@ -18,8 +18,8 @@
 
 # Quick Start Steps
 ## Cluster and policy only
-The scenario is that you have your own acr or keyvault or any sign images.
-You only need aks cluster with ratify installed and the policy definition in your sub.
+The scenario is that you have your own acr or keyvault or any sign images.  
+You only need aks cluster with ratify installed and the policy definition in your sub.  
 `docker run -it fseldow/image-integrity-poc:v1`
 
 If you do not have docker, please run `bash prepare_cluster_only.sh` instead

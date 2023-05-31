@@ -4,7 +4,7 @@ set -euo pipefail
 echo Please input your alias as resource prefix:
 read alias
 export ALIAS=$alias
-
+echo
 echo Please input your subscription id:
 read subscription
 export SUBSCRIPTION_ID=$subscription

@@ -7,7 +7,7 @@ export SKIP_ACR_KEYVAULT=true
 echo Please input your alias as resource prefix:
 read alias
 export ALIAS=$alias
-
+echo
 echo Please input your subscription id:
 read subscription
 export SUBSCRIPTION_ID=$subscription
@@ -27,8 +27,13 @@ echo "az aks get-credentials -g ${RESOURCE_GROUP} -n ${AKS_NAME} --subscription 
 echo
 echo "policy initiative name: [Image Integrity] Ensuring AKS application using signed images"
 echo "initiative id: ${INITIATIVE_ID}"
-echo "please assign the initiative to your resource group"
-
-echo store some env in ./output/base.env
+echo "please assign the initiative to your resource group, e.g."
+echo "az policy assignment create \\"
+echo "    --policy-set-definition ${INITIATIVE_ID} \\"
+echo "    --subscription ${SUBSCRIPTION_ID} \\"
+echo "    --resource-group ${RESOURCE_GROUP} \\"
+echo "    --mi-system-assigned --location ${LOCATION} --name image-integrity-poc-assignment"
+echo
+echo storing env in ./output/base.env
 mkdir -p ./output
 bash store_env.sh ./output/base.env
