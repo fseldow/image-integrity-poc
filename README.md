@@ -1,4 +1,8 @@
 # Before ALL
+## Get the repo
+git clone https://github.com/fseldow/image-integrity-poc
+cd image-integrity-poc
+
 ## Limitations:
 - It will not include mutation policy for now.
 - During the ratify installation via helm. The chart will not include ratify crds (definition will be included). So by default all pods will be denied since there are no verifier existed.
