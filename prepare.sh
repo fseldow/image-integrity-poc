@@ -8,6 +8,7 @@ echo
 echo Please input your subscription id:
 read subscription
 export SUBSCRIPTION_ID=$subscription
+echo
 
 source env.sh
 bash sign.sh

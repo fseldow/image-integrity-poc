@@ -46,7 +46,7 @@ If you do not have docker, please run `bash prepare_cluster_only.sh` instead
 
 ## Prepare full resources.
 `az login`  
-`source prepare.sh`  
+`bash prepare.sh`  
 This script will include the following steps to create an AKS cluster with ratify and workload identity and some signed images
 1. create rg
 1. create private acr
@@ -58,7 +58,7 @@ This script will include the following steps to create an AKS cluster with ratif
 1. deploy ratify via local helm chart (without crds and mutation)
 1. create the custom policy initiative definition in your sub
 
-`source acr_akv_crds.sh` to assign the policy initiative and ratify crds  
+`bash acr_akv_crds.sh` to assign the policy initiative and ratify crds  
 wait for 30min - 1hour for azure policy to take effect
 
 ### verify

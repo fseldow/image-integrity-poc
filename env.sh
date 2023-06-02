@@ -9,14 +9,14 @@ else
     uuid=$(uuidgen)
     export PREFIX=$ALIAS-${uuid:0:3}
 fi
-
+export PREFIX=$(echo $PREFIX | tr '[:upper:]' '[:lower:]')
 export SKIP_ACR_KEYVAULT=${SKIP_ACR_KEYVAULT:-false}
 
 export LOCATION="eastus"
 export RESOURCE_GROUP="${PREFIX}-ratify-rg"
 export AKS_NAME="${PREFIX}-ratify-cluster"
 
-export ACR_NAME="$ALIAS${uuid:0:3}acr"
+export ACR_NAME=$(echo "$ALIAS${uuid:0:3}acr" | tr '[:upper:]' '[:lower:]')
 export REGISTRY=$ACR_NAME.azurecr.io
 export REPO=${REGISTRY}/net-monitor
 export IMAGE=${REPO}:v1
@@ -57,6 +57,7 @@ export IDENTITY_CLIENT_ID=$(az identity show --name myIdentity --resource-group 
 export IDENTITY_RESOURCE_ID=$(az identity show --name myIdentity --resource-group ${RESOURCE_GROUP} --query 'id' -o tsv)
 # assign permission to acr and keyvault
 if [[ $SKIP_ACR_KEYVAULT == "false" ]]; then
+    sleep 60
     az keyvault set-policy -n ${AKV_NAME} --certificate-permissions get --object-id  ${IDENTITY_PRINCIPAL_ID} > /dev/null
     az role assignment create --assignee ${IDENTITY_PRINCIPAL_ID} --role "Acrpull" --scope "/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.ContainerRegistry/registries/${ACR_NAME}" > /dev/null
 fi
