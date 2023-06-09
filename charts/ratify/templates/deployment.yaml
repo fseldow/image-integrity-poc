@@ -85,6 +85,9 @@ spec:
               name: client-ca-cert
               readOnly: true
             {{- end }}
+            - mountPath: /var/run/secrets/azure/tokens
+              name: azure-identity-token
+              readOnly: true
           env:
           {{- if .Values.logLevel }}
             - name: RATIFY_LOG_LEVEL
@@ -116,6 +119,12 @@ spec:
             - name: {{ $k }}
               value: {{ $v | ternary 1 0 | quote }}
           {{- end}}
+            - name: AZURE_TENANT_ID
+              value: {{ .Values.akvCertConfig.tenantId }}
+            - name: AZURE_FEDERATED_TOKEN_FILE
+              value: /var/run/secrets/azure/tokens/azure-identity-token
+            - name: AZURE_AUTHORITY_HOST
+              value: https://login.microsoftonline.com/
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
@@ -155,3 +164,11 @@ spec:
               - key: ca.crt
                 path: ca.crt
         {{- end }}
+        - name: azure-identity-token
+          projected:
+            defaultMode: 420
+            sources:
+            - serviceAccountToken:
+                audience: api://AzureADTokenExchange
+                expirationSeconds: 3600
+                path: azure-identity-token

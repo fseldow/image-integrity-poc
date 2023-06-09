@@ -6,17 +6,19 @@ echo "Creating aks cluster"
 az aks create -g ${RESOURCE_GROUP} -n ${AKS_NAME} \
     -k 1.26 \
     --enable-addons azure-policy \
-    --enable-oidc-issuer --enable-workload-identity \
+    --enable-oidc-issuer \
     --generate-ssh-keys > /dev/null
 az aks get-credentials -g ${RESOURCE_GROUP} -n ${AKS_NAME}
 
+export TENANT_ID=$(az account show --query tenantId -o tsv)
 kubectl cluster-info
 
 echo
 echo "Install ratify via helm local chart"
 helm install ratify ./charts/ratify \
     --atomic \
-    --namespace gatekeeper-system
+    --namespace gatekeeper-system \
+    --set akvCertConfig.tenantId=${TENANT_ID}
 
 echo
 echo "Ensuring msi bind with ratify service account"
