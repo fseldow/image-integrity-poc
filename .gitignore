@@ -3,6 +3,8 @@ certs/
 output/
 crds-workload-identity/
 
+.vscode
+
 notation.*
 *.tar.gz
 my_policy.json
